@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)file:///C:/Users/Lenovo/Documents/varaha_unit_economics.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varaha — Biochar Project Unit Economics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./Varaha Unit Economics_files/css2" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F0E6;
+    --paper-2:#EDE7D8;
+    --ink:#1B2A21;
+    --ink-soft:#3C4A40;
+    --line:#D6CDBA;
+    --clay:#B0532B;
+    --clay-soft:#C57A4E;
+    --sage:#5E7A5C;
+    --sage-deep:#3F5B41;
+    --gold:#B8862E;
+    --rev:#3F5B41;
+    --cost:#B0532B;
+    --margin:#B8862E;
+    --shadow:rgba(27,42,33,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);
+    background-image:radial-gradient(circle at 12% 8%, rgba(94,122,92,.10), transparent 42%),
+                     radial-gradient(circle at 92% 4%, rgba(176,83,43,.07), transparent 40%);
+    color:var(--ink);
+    font-family:'Archivo',sans-serif;
+    line-height:1.45;
+    padding:26px clamp(16px,4vw,48px) 60px;
+  }
+  .num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  /* Header */
+  header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;
+         border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px;}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);font-weight:600;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(28px,4.4vw,44px);line-height:1.02;margin-top:6px;letter-spacing:-.01em;}
+  h1 em{font-style:italic;color:var(--sage-deep);}
+  .sub{color:var(--ink-soft);font-size:14.5px;max-width:560px;margin-top:9px;}
+  .badge{display:inline-flex;align-items:center;gap:7px;background:var(--paper-2);border:1px solid var(--line);
+         border-radius:999px;padding:7px 14px;font-size:11.5px;color:var(--ink-soft);font-weight:500;white-space:nowrap;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--clay);}
+  .by{text-align:right;font-size:12px;color:var(--ink-soft);}
+  .by b{color:var(--ink);font-weight:600;}
+
+  .disclaimer{margin:14px 0 24px;font-size:12px;color:var(--ink-soft);background:rgba(184,134,46,.10);
+              border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;}
+
+  /* Layout */
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:22px;align-items:start;}
+  @media(max-width:900px){.grid{grid-template-columns:1fr;}}
+
+  .card{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:12px;padding:20px 20px 22px;
+        box-shadow:0 2px 0 var(--shadow);}
+  .card h2{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin-bottom:3px;}
+  .card .hint{font-size:11.5px;color:var(--ink-soft);margin-bottom:16px;}
+
+  /* Sliders */
+  .ctrl{margin-bottom:15px;}
+  .ctrl:last-child{margin-bottom:0;}
+  .ctrl .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;}
+  .ctrl label{font-size:12.5px;font-weight:500;color:var(--ink-soft);}
+  .ctrl .val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;}
+  .ctrl .val.rev{color:var(--rev);}
+  .ctrl .val.cost{color:var(--cost);}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;
+    background:linear-gradient(90deg,var(--clay-soft),var(--line));outline:none;}
+  input[type=range].rev{background:linear-gradient(90deg,var(--sage),var(--line));}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;
+    background:var(--ink);border:2.5px solid var(--paper);cursor:pointer;box-shadow:0 1px 4px var(--shadow);}
+  input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;background:var(--ink);
+    border:2.5px solid var(--paper);cursor:pointer;}
+  .reset{margin-top:18px;width:100%;background:none;border:1px solid var(--ink);color:var(--ink);
+    font-family:'Archivo';font-size:12px;font-weight:600;padding:8px;border-radius:7px;cursor:pointer;letter-spacing:.04em;
+    transition:.15s;}
+  .reset:hover{background:var(--ink);color:var(--paper);}
+
+  /* KPI strip */
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+  @media(max-width:560px){.kpis{grid-template-columns:1fr;}}
+  .kpi{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:12px;padding:15px 16px;}
+  .kpi .k{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;}
+  .kpi .v{font-family:'JetBrains Mono',monospace;font-size:27px;font-weight:700;margin-top:4px;line-height:1;}
+  .kpi .v small{font-size:14px;font-weight:500;}
+  .kpi .meta{font-size:11px;color:var(--ink-soft);margin-top:6px;}
+  .kpi.accent{background:var(--ink);border-color:var(--ink);}
+  .kpi.accent .k{color:var(--clay-soft);}
+  .kpi.accent .v{color:var(--paper);}
+  .kpi.accent .meta{color:#B9C4B5;}
+
+  /* Waterfall */
+  .wfwrap{margin-top:4px;}
+  svg{display:block;width:100%;height:auto;overflow:visible;}
+  .axis{font-family:'JetBrains Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .barlabel{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;}
+  .barname{font-family:'Archivo';font-size:10.5px;fill:var(--ink-soft);font-weight:500;}
+
+  /* two col lower */
+  .lower{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px;}
+  @media(max-width:780px){.lower{grid-template-columns:1fr;}}
+
+  .ptable{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
+  .ptable td{padding:7px 2px;border-bottom:1px solid var(--line);}
+  .ptable tr:last-child td{border-bottom:none;}
+  .ptable td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-weight:500;}
+  .ptable tr.tot td{border-top:2px solid var(--ink);border-bottom:none;font-weight:700;padding-top:9px;}
+  .ptable tr.tot td.r{color:var(--sage-deep);}
+  .ptable .muted{color:var(--ink-soft);font-size:11px;}
+  .ptable tr.sect td{border-bottom:none;padding:11px 2px 3px;}
+  .ptable tr.sect:first-child td{padding-top:2px;}
+  .ptable tr.sect .lbl{font-family:'Archivo';font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:700;color:var(--clay);}
+  .ptable tr.sect .lbl span{color:var(--ink-soft);font-weight:500;letter-spacing:0;text-transform:none;font-size:11px;}
+  .pfoot{font-size:11px;color:var(--ink-soft);margin-top:12px;line-height:1.4;
+    border-top:1px dashed var(--line);padding-top:9px;}
+
+  .lev{font-size:13px;}
+  .lev li{list-style:none;padding:11px 0 11px 26px;position:relative;border-bottom:1px dashed var(--line);}
+  .lev li:last-child{border-bottom:none;}
+  .lev li::before{content:"?";position:absolute;left:0;top:10px;width:17px;height:17px;border-radius:50%;
+    background:var(--clay);color:var(--paper);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';}
+  .lev b{color:var(--ink);font-weight:600;}
+  .lev .q{color:var(--ink-soft);font-size:12px;display:block;margin-top:2px;}
+
+  .jnote{font-size:11.5px;color:var(--ink-soft);margin-top:10px;}
+  footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-soft);
+         display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .src{font-size:11px;}
+  .src b{color:var(--ink-soft);}
+  a{color:var(--clay);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="eyebrow">Business Finance · Working Model</div>
+      <h1>Biochar Project<br><em>Unit Economics</em></h1>
+      <p class="sub">A per-tonne profitability framework for Varaha's smallholder biochar pathway — built to show how project margins move, where the cash-timing risk sits, and which levers I'd pressure-test with live data.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-end;">
+      <span class="badge"><span class="dot"></span>Illustrative · public data + stated assumptions</span>
+      <div class="by">Prepared by <b>Rahul</b> · for discussion<br>Assistant Manager, Business Finance</div>
+    </div>
+  </header>
+
+  <p class="disclaimer"><b>Read me first.</b> I don't have Varaha's actuals, so every input here is illustrative — drawn from public disclosures (the Microsoft 18-reactor / 2M-tonne biochar deal, the $45M Series&nbsp;B, 2025 credit volumes to Microsoft, Google &amp; Louis Dreyfus) and 2025 market pricing (Indian biochar ≈ €105–150/t; global biochar ≈ $150–164/t). The <i>structure</i> is the point; the inputs get replaced with real numbers on day one. Drag the sliders to see the model behave.</p>
+
+  <div class="grid">
+
+    <!-- CONTROLS -->
+    <div class="card" style="position:sticky;top:18px;">
+      <h2>Inputs / tonne CO₂e</h2>
+      <p class="hint">Revenue driver in green, cost stack in clay. Per verified tonne of biochar removal.</p>
+
+      <div class="ctrl">
+        <div class="top"><label>Realized credit price</label><span class="val rev num" id="vPrice">$145</span></div>
+        <input type="range" class="rev" id="price" min="100" max="200" step="1" value="145">
+      </div>
+      <div class="ctrl">
+        <div class="top"><label>Farmer payment (biomass + share)</label><span class="val cost num" id="vFarmer">$35</span></div>
+        <input type="range" id="farmer" min="15" max="60" step="1" value="35">
+      </div>
+      <div class="ctrl">
+        <div class="top"><label>Production &amp; gasification opex</label><span class="val cost num" id="vProd">$30</span></div>
+        <input type="range" id="prod" min="12" max="55" step="1" value="30">
+      </div>
+      <div class="ctrl">
+        <div class="top"><label>MRV, verification &amp; registry fees</label><span class="val cost num" id="vMrv">$20</span></div>
+        <input type="range" id="mrv" min="8" max="40" step="1" value="20">
+      </div>
+      <div class="ctrl">
+        <div class="top"><label>Logistics &amp; feedstock transport</label><span class="val cost num" id="vLog">$12</span></div>
+        <input type="range" id="log" min="4" max="30" step="1" value="12">
+      </div>
+      <div class="ctrl">
+        <div class="top"><label>Origination + platform / SG&amp;A allocation</label><span class="val cost num" id="vSga">$18</span></div>
+        <input type="range" id="sga" min="6" max="40" step="1" value="18">
+      </div>
+
+      <button class="reset" id="reset">Reset to base case</button>
+    </div>
+
+    <!-- OUTPUTS -->
+    <div>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="k">Contribution / tonne</div>
+          <div class="v num" id="kMargin" style="color: var(--sage-deep);">$30</div>
+          <div class="meta" id="kMarginPct">20.7% of credit price</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Total cost / tonne</div>
+          <div class="v num" id="kCost">$115</div>
+          <div class="meta">Loaded cost to deliver one verified tonne</div>
+        </div>
+        <div class="kpi accent">
+          <div class="k">Project lifetime contribution</div>
+          <div class="v num" id="kLife" style="color: var(--paper);">60<small>M</small></div>
+          <div class="meta">on ~2.0M tonnes (18-reactor / 15-yr deal)</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Price → cost stack → margin</h2>
+        <p class="hint">How one tonne of credit revenue is consumed, top to bottom.</p>
+        <div class="wfwrap"><svg id="waterfall" viewBox="0 0 700 280" preserveAspectRatio="xMidYMid meet"><line x1="8" y1="234" x2="692" y2="234" stroke="var(--ink)" stroke-width="1.5"></line><rect x="8" y="24.47619047619048" width="85.71428571428571" height="209.52380952380952" rx="3" fill="var(--rev)" opacity="1"></rect><text class="barlabel" x="50.857142857142854" y="18.47619047619048" text-anchor="middle" fill="var(--rev)">$145</text><text class="barname" x="50.857142857142854" y="250" text-anchor="middle">Credit</text><text class="barname" x="50.857142857142854" y="262" text-anchor="middle" opacity=".7">price</text><rect x="107.71428571428571" y="24.47619047619048" width="85.71428571428571" height="50.57471264367816" rx="3" fill="var(--cost)" opacity="0.92"></rect><line x1="193.42857142857142" y1="75.05090311986862" x2="207.42857142857142" y2="75.05090311986862" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="2,2" opacity=".5"></line><text class="barlabel" x="150.57142857142856" y="19.47619047619048" text-anchor="middle" fill="var(--cost)">−$35</text><text class="barname" x="150.57142857142856" y="250" text-anchor="middle">Farmer</text><text class="barname" x="150.57142857142856" y="262" text-anchor="middle" opacity=".7">pay</text><rect x="207.42857142857142" y="75.05090311986862" width="85.71428571428571" height="43.34975369458128" rx="3" fill="var(--cost)" opacity="0.92"></rect><line x1="293.1428571428571" y1="118.40065681444992" x2="307.1428571428571" y2="118.40065681444992" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="2,2" opacity=".5"></line><text class="barlabel" x="250.28571428571428" y="70.05090311986862" text-anchor="middle" fill="var(--cost)">−$30</text><text class="barname" x="250.28571428571428" y="250" text-anchor="middle">Prod</text><text class="barname" x="250.28571428571428" y="262" text-anchor="middle" opacity=".7">opex</text><rect x="307.1428571428571" y="118.40065681444992" width="85.71428571428571" height="28.89983579638752" rx="3" fill="var(--cost)" opacity="0.92"></rect><line x1="392.85714285714283" y1="147.30049261083744" x2="406.85714285714283" y2="147.30049261083744" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="2,2" opacity=".5"></line><text class="barlabel" x="349.99999999999994" y="113.40065681444992" text-anchor="middle" fill="var(--cost)">−$20</text><text class="barname" x="349.99999999999994" y="250" text-anchor="middle">MRV</text><text class="barname" x="349.99999999999994" y="262" text-anchor="middle" opacity=".7">+fees</text><rect x="406.85714285714283" y="147.30049261083744" width="85.71428571428571" height="17.339901477832512" rx="3" fill="var(--cost)" opacity="0.92"></rect><line x1="492.57142857142856" y1="164.64039408866995" x2="506.57142857142856" y2="164.64039408866995" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="2,2" opacity=".5"></line><text class="barlabel" x="449.71428571428567" y="142.30049261083744" text-anchor="middle" fill="var(--cost)">−$12</text><text class="barname" x="449.71428571428567" y="250" text-anchor="middle">Logist.</text><rect x="506.57142857142856" y="164.64039408866995" width="85.71428571428571" height="26.00985221674877" rx="3" fill="var(--cost)" opacity="0.92"></rect><line x1="592.2857142857142" y1="190.6502463054187" x2="606.2857142857142" y2="190.6502463054187" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="2,2" opacity=".5"></line><text class="barlabel" x="549.4285714285714" y="159.64039408866995" text-anchor="middle" fill="var(--cost)">−$18</text><text class="barname" x="549.4285714285714" y="250" text-anchor="middle">SG&amp;A</text><text class="barname" x="549.4285714285714" y="262" text-anchor="middle" opacity=".7">alloc</text><rect x="606.2857142857142" y="190.6502463054187" width="85.71428571428571" height="43.34975369458128" rx="3" fill="var(--margin)" opacity="1"></rect><text class="barlabel" x="649.1428571428571" y="184.6502463054187" text-anchor="middle" fill="var(--gold)">$30</text><text class="barname" x="649.1428571428571" y="250" text-anchor="middle">Margin</text><text class="barname" x="649.1428571428571" y="262" text-anchor="middle" opacity=".7">/tonne</text></svg></div>
+      </div>
+
+      <div class="lower">
+        <div class="card">
+          <h2>Project P&amp;L view</h2>
+          <p class="hint">Microsoft biochar deal — ~2.0M tonnes over 15 years, at current per-tonne inputs. Illustrative.</p>
+          <table class="ptable">
+            <tbody><tr class="sect"><td colspan="2" class="lbl">Per tonne CO₂e <span>· from model above</span></td></tr>
+            <tr><td>Realized credit price</td><td class="r" id="pPriceT">$145</td></tr>
+            <tr><td>Delivery cost</td><td class="r" id="pCostT">$115</td></tr>
+            <tr class="tot"><td>Contribution / tonne</td><td class="r" id="pContribT">$30</td></tr>
+
+            <tr class="sect"><td colspan="2" class="lbl">Lifetime <span>· × 2.0M tonnes</span></td></tr>
+            <tr><td>Gross revenue</td><td class="r" id="pRev">290M</td></tr>
+            <tr><td>Delivery cost</td><td class="r" id="pCost">230M</td></tr>
+            <tr class="tot"><td>Lifetime contribution</td><td class="r" id="pContrib">60M</td></tr>
+            <tr><td class="muted">Contribution margin</td><td class="r muted" id="pMarginPct">~21%</td></tr>
+
+            <tr class="sect"><td colspan="2" class="lbl">Spread across 15 years <span>· simple average</span></td></tr>
+            <tr><td>Avg. annual volume <span class="muted">(2.0M ÷ 15)</span></td><td class="r" id="pAnnual">~133K t</td></tr>
+            <tr><td>Avg. annual contribution <span class="muted">(÷ 15)</span></td><td class="r" id="pAnnContrib">~4.0M</td></tr>
+          </tbody></table>
+          <p class="pfoot">Annual figures are flat lifetime averages, not full-capacity output. Early years run lower while reactors are commissioned; mature years run higher to compensate. The actual ramp schedule isn't public.</p>
+        </div>
+
+        <div class="card">
+          <h2>The cash-timing gap</h2>
+          <p class="hint">Why this business is working-capital hungry — and a financing question, not just a P&amp;L one.</p>
+          <svg id="jcurve" viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet"><line x1="30" y1="46.30769230769231" x2="348" y2="46.30769230769231" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="3,3" opacity=".6"></line><text class="axis" x="26" y="49.30769230769231" text-anchor="end">0</text><path d="M 30 46.30769230769231 L 30.0 46.3 L 38.0 52.3 L 45.9 58.3 L 53.8 64.3 L 61.8 70.2 L 69.8 76.2 L 77.7 82.2 L 85.7 88.2 L 93.6 94.2 L 101.5 100.2 L 109.5 106.1 L 117.5 112.1 L 125.4 118.1 L 133.4 124.1 L 141.3 130.1 L 149.3 136.1 L 157.2 142.0 L 165.2 148.0 L 173.1 154.0 L 181.0 149.5 L 189.0 144.9 L 197.0 140.4 L 204.9 135.9 L 212.8 131.4 L 220.8 126.8 L 228.8 122.3 L 236.7 117.8 L 244.7 113.2 L 252.6 108.7 L 260.5 104.2 L 268.5 99.7 L 276.5 95.1 L 284.4 90.6 L 292.3 86.1 L 300.3 81.6 L 308.3 77.0 L 316.2 72.5 L 324.2 68.0 L 332.1 63.4 L 340.1 58.9 L 348.0 54.4 L 348 46.30769230769231 L 30 46.30769230769231 Z" fill="var(--clay)" opacity=".10"></path><path d="M 30 46.30769230769231 L 30.0 46.3 L 38.0 52.3 L 45.9 58.3 L 53.8 64.3 L 61.8 70.2 L 69.8 76.2 L 77.7 82.2 L 85.7 88.2 L 93.6 94.2 L 101.5 100.2 L 109.5 106.1 L 117.5 112.1 L 125.4 118.1 L 133.4 124.1 L 141.3 130.1 L 149.3 136.1 L 157.2 142.0 L 165.2 148.0 L 173.1 154.0 L 181.0 149.5 L 189.0 144.9 L 197.0 140.4 L 204.9 135.9 L 212.8 131.4 L 220.8 126.8 L 228.8 122.3 L 236.7 117.8 L 244.7 113.2 L 252.6 108.7 L 260.5 104.2 L 268.5 99.7 L 276.5 95.1 L 284.4 90.6 L 292.3 86.1 L 300.3 81.6 L 308.3 77.0 L 316.2 72.5 L 324.2 68.0 L 332.1 63.4 L 340.1 58.9 L 348.0 54.4" fill="none" stroke="var(--clay)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="173.1" cy="154" r="3.5" fill="var(--clay)"></circle><text class="axis" x="179.1" y="158" fill="var(--clay)">financing need</text><text class="axis" x="30" y="172" text-anchor="start">spend</text><text class="axis" x="348" y="172" text-anchor="end">credits paid →</text><text class="axis" x="189" y="172" text-anchor="middle" opacity=".7">project timeline</text></svg>
+          <p class="jnote">Cash goes <b>out</b> early (biomass, reactor build, production, MRV); credits are only issued, delivered and <b>paid</b> over a verification lag. The trough is the financing need — what equity and debt have to bridge.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:22px;">
+        <h2>Three levers I'd pressure-test</h2>
+        <p class="hint">Framed as questions, not prescriptions — I'd want the actuals before claiming any of these.</p>
+        <ul class="lev">
+          <li><b>Defend the cost-base moat.</b><span class="q">India is among the lowest-cost durable-removal supply globally while credits price off a global curve. How much of that spread is structural vs. eroding as Indian supply scales — and how do we protect it in offtake pricing?</span></li>
+          <li><b>Shorten the cash-timing gap.</b><span class="q">Can pre-payments / milestone-linked offtake tranches or a verification-linked debt facility shrink the working-capital trough, lowering the cost of capital per tonne?</span></li>
+          <li><b>Mix toward margin, not just volume.</b><span class="q">Enhanced rock weathering prices ~2x biochar. What does a contribution-per-tonne view (not tonnes alone) say about where the next reactor / project dollar should go?</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="src"><b>Sources:</b> Varaha press releases &amp; Series B disclosures; CDR.fyi / Sylvera / S&amp;P 2025 biochar pricing. All figures illustrative.</div>
+    <div>Built as a discussion artifact · not an official Varaha document</div>
+  </footer>
+</div>
+
+<script>
+const ids=['price','farmer','prod','mrv','log','sga'];
+const base={price:145,farmer:35,prod:30,mrv:20,log:12,sga:18};
+const el=id=>document.getElementById(id);
+const fmt=n=>'$'+Math.round(n);
+const fmtM=n=>'$'+(n).toFixed(1)+'M';
+
+function readVals(){
+  return {price:+el('price').value,farmer:+el('farmer').value,prod:+el('prod').value,
+          mrv:+el('mrv').value,log:+el('log').value,sga:+el('sga').value};
+}
+
+function render(){
+  const v=readVals();
+  el('vPrice').textContent='$'+v.price;
+  el('vFarmer').textContent='$'+v.farmer;
+  el('vProd').textContent='$'+v.prod;
+  el('vMrv').textContent='$'+v.mrv;
+  el('vLog').textContent='$'+v.log;
+  el('vSga').textContent='$'+v.sga;
+
+  const cost=v.farmer+v.prod+v.mrv+v.log+v.sga;
+  const margin=v.price-cost;
+  const pct=v.price>0?(margin/v.price*100):0;
+
+  el('kMargin').textContent=fmt(margin);
+  el('kMargin').style.color= margin<0 ? 'var(--clay)' : 'var(--sage-deep)';
+  el('kMarginPct').textContent=pct.toFixed(1)+'% of credit price';
+  el('kCost').textContent=fmt(cost);
+
+  const vol=2.0; // M tonnes lifetime
+  const lifeContribM=margin*vol; // $M  (margin $/t * 2.0M t = $M)
+  el('kLife').innerHTML=lifeContribM.toFixed(0)+'<small>M</small>';
+  el('kLife').style.color = margin<0 ? 'var(--clay-soft)':'var(--paper)';
+
+  // Per-tonne tier
+  el('pPriceT').textContent='$'+v.price;
+  el('pCostT').textContent=fmt(cost);
+  el('pContribT').textContent=fmt(margin);
+  // Lifetime tier
+  el('pRev').textContent=(v.price*vol).toFixed(0)+'M';
+  el('pCost').textContent=(cost*vol).toFixed(0)+'M';
+  el('pContrib').textContent=lifeContribM.toFixed(0)+'M';
+  el('pMarginPct').textContent='~'+pct.toFixed(0)+'%';
+  // 15-year average tier
+  el('pAnnual').textContent='~133K t';
+  el('pAnnContrib').textContent='~'+(lifeContribM/15).toFixed(1)+'M';
+
+  drawWaterfall(v,cost,margin);
+  drawJ(v.price);
+}
+
+function drawWaterfall(v,cost,margin){
+  const W=700,H=280,padL=8,padR=8,padT=14,padB=46;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const maxV=Math.max(v.price,cost,1);
+  const yScale=plotH/ (maxV*1.05);
+  const steps=[
+    {name:'Credit',sub:'price',val:v.price,type:'rev'},
+    {name:'Farmer',sub:'pay',val:-v.farmer,type:'cost'},
+    {name:'Prod',sub:'opex',val:-v.prod,type:'cost'},
+    {name:'MRV',sub:'+fees',val:-v.mrv,type:'cost'},
+    {name:'Logist.',sub:'',val:-v.log,type:'cost'},
+    {name:'SG&A',sub:'alloc',val:-v.sga,type:'cost'},
+    {name:'Margin',sub:'/tonne',val:margin,type:'margin'}
+  ];
+  const n=steps.length;
+  const gap=14;
+  const bw=(plotW-gap*(n-1))/n;
+  const baseY=padT+plotH;
+  let running=0;
+  let svg='';
+  // zero/grid line
+  svg+=`<line x1="${padL}" y1="${baseY}" x2="${W-padR}" y2="${baseY}" stroke="var(--ink)" stroke-width="1.5"/>`;
+  steps.forEach((s,i)=>{
+    const x=padL+i*(bw+gap);
+    let top,h,fill,val,prevRunning=running;
+    if(s.type==='rev'){
+      running=s.val; h=Math.abs(s.val)*yScale; top=baseY-h; fill='var(--rev)'; val=s.val;
+    } else if(s.type==='cost'){
+      const newRun=running+s.val; h=Math.abs(s.val)*yScale; top=baseY-running*yScale; fill='var(--cost)';
+      running=newRun; val=s.val;
+    } else { // margin
+      h=Math.abs(margin)*yScale;
+      if(margin>=0){ top=baseY-margin*yScale; } else { top=baseY; }
+      fill='var(--margin)'; val=margin;
+    }
+    if(h<1) h=1;
+    svg+=`<rect x="${x}" y="${top}" width="${bw}" height="${h}" rx="3" fill="${fill}" opacity="${s.type==='cost'?0.92:1}"/>`;
+    // connector line (dashed) for cost steps
+    if(s.type==='cost' && i<n-1){
+      const yLink=baseY-running*yScale;
+      svg+=`<line x1="${x+bw}" y1="${yLink}" x2="${x+bw+gap}" y2="${yLink}" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="2,2" opacity=".5"/>`;
+    }
+    // value label
+    const labY = s.type==='cost' ? top-5 : top-6;
+    const lblColor = s.type==='margin'? (margin<0?'var(--clay)':'var(--gold)') : (s.type==='rev'?'var(--rev)':'var(--cost)');
+    svg+=`<text class="barlabel" x="${x+bw/2}" y="${Math.max(labY,11)}" text-anchor="middle" fill="${lblColor}">${val<0?'−$'+Math.abs(val):'$'+Math.round(val)}</text>`;
+    // name
+    svg+=`<text class="barname" x="${x+bw/2}" y="${baseY+16}" text-anchor="middle">${s.name}</text>`;
+    if(s.sub) svg+=`<text class="barname" x="${x+bw/2}" y="${baseY+28}" text-anchor="middle" opacity=".7">${s.sub}</text>`;
+  });
+  el('waterfall').innerHTML=svg;
+}
+
+function drawJ(price){
+  // illustrative cumulative cash curve over a project's early life
+  const W=360,H=180,padL=30,padR=12,padT=14,padB=26;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  // shape: dip down (cash out) then climb (credits paid). Depth scales lightly w/ price (higher price = faster recovery)
+  const recovery = 0.7 + (price-100)/100*0.5; // 0.7..1.2
+  const pts=[];
+  const N=40;
+  for(let i=0;i<=N;i++){
+    const t=i/N;
+    // out-curve then recovery: -sin-ish trough
+    let y;
+    const trough=-1.0;
+    if(t<0.45){ y= trough*(t/0.45); }
+    else { y= trough + (trough*-1)*recovery*((t-0.45)/0.55); }
+    pts.push({t,y});
+  }
+  const ys=pts.map(p=>p.y);
+  const minY=Math.min(...ys), maxY=Math.max(...ys, .3);
+  const xPx=t=>padL+t*plotW;
+  const yPx=y=>padT+ (maxY-y)/(maxY-minY)*plotH;
+  const zeroY=yPx(0);
+  let svg='';
+  // zero line
+  svg+=`<line x1="${padL}" y1="${zeroY}" x2="${W-padR}" y2="${zeroY}" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="3,3" opacity=".6"/>`;
+  svg+=`<text class="axis" x="${padL-4}" y="${zeroY+3}" text-anchor="end">0</text>`;
+  // area path (below zero = clay, above = sage)
+  let d='M '+xPx(0)+' '+yPx(pts[0].y);
+  pts.forEach(p=>{ d+=' L '+xPx(p.t).toFixed(1)+' '+yPx(p.y).toFixed(1); });
+  // fill to zero line
+  let area=d+` L ${xPx(1)} ${zeroY} L ${xPx(0)} ${zeroY} Z`;
+  svg+=`<path d="${area}" fill="var(--clay)" opacity=".10"/>`;
+  svg+=`<path d="${d}" fill="none" stroke="var(--clay)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // trough marker
+  let tp=pts.reduce((a,b)=>b.y<a.y?b:a);
+  svg+=`<circle cx="${xPx(tp.t)}" cy="${yPx(tp.y)}" r="3.5" fill="var(--clay)"/>`;
+  svg+=`<text class="axis" x="${xPx(tp.t)+6}" y="${yPx(tp.y)+4}" fill="var(--clay)">financing need</text>`;
+  // axis labels
+  svg+=`<text class="axis" x="${padL}" y="${H-8}" text-anchor="start">spend</text>`;
+  svg+=`<text class="axis" x="${W-padR}" y="${H-8}" text-anchor="end">credits paid →</text>`;
+  svg+=`<text class="axis" x="${(padL+W-padR)/2}" y="${H-8}" text-anchor="middle" opacity=".7">project timeline</text>`;
+  el('jcurve').innerHTML=svg;
+}
+
+ids.forEach(id=>el(id).addEventListener('input',render));
+el('reset').addEventListener('click',()=>{ids.forEach(id=>el(id).value=base[id]);render();});
+render();
+</script>
+
+
+</body></html>
